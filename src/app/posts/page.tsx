@@ -1,12 +1,14 @@
 "use client";
 
+import { PostDto } from "@/type/post";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 export default function Home() {
-  const [posts, setPosts] = useState<{ id: number; title: string }[]>([]);
-
+  const [posts, setPosts] = useState<PostDto[]>([]);
+  const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
   useEffect(() => {
-    fetch("http://localhost:8080/api/v1/posts")
+    fetch(`${baseUrl}/api/v1/posts`)
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
@@ -15,19 +17,19 @@ export default function Home() {
   }, []);
 
   return (
-    
     <div className="flex flex-col gap-9">
       <h1>글 목록</h1>
-      // 아무것도 없으면 Loading... 출력
       {posts.length === 0 && <div>Loading...</div>}
       {posts.length > 0 && (
-      <ul>
-        {posts.map((post) => (
-          <li key={post.id}>
-            {post.id} : {post.title}
-          </li>
-        ))}
-      </ul>
+        <ul>
+          {posts.map((post) => (
+            <li key={post.id}>
+              <Link href={`/posts/${post.id}`}>
+                {post.id} : {post.title}
+              </Link>
+            </li>
+          ))}
+        </ul>
       )}
     </div>
   );
