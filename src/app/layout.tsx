@@ -28,7 +28,11 @@ export default function RootLayout({
       <body
       // bg : 배경색 칠함, 빨간색
       // ! : 가장 우선적으로 적용(브라우저가 중요한 것이라고 판단)
-        className={`${geistSans.variable} ${geistMono.variable} antialiased !bg-red-300`}
+      // 위의 두 코드로만 작성하면 실제 바디 영역이랑 색칠 영역이 달라서 오해가 생길 수 있다
+      // border 로 body 영역 잡기
+      // flex -> 가로로 풀림
+      // 방향 column -> 세로로 풀림
+        className={`${geistSans.variable} ${geistMono.variable} antialiased !bg-red-300 border-2 min-h-screen flex flex-col`}
       >
         <header>
           <nav className="flex gap-4">
@@ -36,7 +40,7 @@ export default function RootLayout({
             <Link href="/posts">글 목록</Link>
           </nav>
         </header>
-        <main>{children}</main>
+        <main className="flex-1">{children}</main>
         <footer>푸터</footer>
       </body>
     </html>
