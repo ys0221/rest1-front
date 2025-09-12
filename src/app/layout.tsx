@@ -26,7 +26,9 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      // bg : 배경색 칠함, 빨간색
+      // ! : 가장 우선적으로 적용(브라우저가 중요한 것이라고 판단)
+        className={`${geistSans.variable} ${geistMono.variable} antialiased !bg-red-300`}
       >
         <header>
           <nav className="flex gap-4">
