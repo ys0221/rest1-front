@@ -1,7 +1,7 @@
 "use client";
 
 import { fetchApi } from "@/lib/client";
-import { PostDto } from "@/type/post";
+import { PostCommentDto, PostDto } from "@/type/post";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -11,9 +11,13 @@ export default function Home() {
   const router = useRouter();
 
   const [post, setPost] = useState<PostDto | null>(null);
+  const [postComments, setPostComments] = useState<PostCommentDto[] | null>(
+    null
+  );
 
   useEffect(() => {
     fetchApi(`/api/v1/posts/${id}`).then(setPost);
+    fetchApi(`/api/v1/posts/${id}/comments`).then(setPostComments);
   }, []);
 
   const deletePost = (id: number) => {
@@ -28,10 +32,9 @@ export default function Home() {
   if (post === null) {
     return <div>Loading...</div>;
   }
-
   return (
     <>
-      <h1>글 상세 보기</h1>
+      <h1 className="p-2">글 상세 보기</h1>
 
       <div>
         <div>번호 : {post.id}</div>
@@ -53,11 +56,21 @@ export default function Home() {
         </button>
       </div>
 
-      <ul>
-        <li>
-            
-        </li>
-      </ul>
+      <h2 className="p-2">댓글 목록</h2>
+      {postComments === null && <div>Loading...</div>}
+      {postComments !== null && postComments.length === 0 && (
+        <div>댓글이 없습니다.</div>
+      )}
+
+      {postComments !== null && postComments.length > 0 && (
+        <ul>
+          {postComments.map((postComment) => (
+            <li key={postComment.id}>
+              {postComment.id} : {postComment.content}
+            </li>
+          ))}
+        </ul>
+      )}
     </>
   );
 }
