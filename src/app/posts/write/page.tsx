@@ -1,8 +1,11 @@
 "use client";
 
 import { fetchApi } from "@/lib/client";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
+  const router = useRouter();
+
   const handleSubmit = (e: any) => {
     e.preventDefault();
 
@@ -29,6 +32,7 @@ export default function Home() {
       }),
     }).then((data) => {
       alert(data.msg);
+      router.replace(`/posts/${data.data.postDto.id}`);
     });
   };
 
@@ -36,9 +40,20 @@ export default function Home() {
     <>
       <h1 className="text-center">새 글 작성</h1>
       <form className="flex flex-col gap-2 p-2" onSubmit={handleSubmit}>
-        <input type="text" name="title" placeholder="제목" />
-        <textarea name="content" placeholder="내용" />
-        <button type="submit">저장</button>
+        <input
+          className="border border-gray-300 rounded p-2"
+          type="text"
+          name="title"
+          placeholder="제목"
+        />
+        <textarea
+          className="border border-gray-300 rounded p-2"
+          name="content"
+          placeholder="내용"
+        />
+        <button className="bg-blue-500 text-white p-2 rounded" type="submit">
+          저장
+        </button>
       </form>
     </>
   );
