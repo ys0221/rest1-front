@@ -2,31 +2,31 @@
 
 import { fetchApi } from "@/lib/client";
 import { PostDto } from "@/type/post";
-import Link from "next/link";
+import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function Home() {
-  const [posts, setPosts] = useState<PostDto[]>([]);
+  const { id } = useParams();
+
+  const [post, setPost] = useState<PostDto | null>(null);
 
   useEffect(() => {
-    fetchApi(`/api/v1/posts`).then(setPosts);
+    fetchApi(`/api/v1/posts/${id}`).then(setPost);
   }, []);
 
   return (
-    <div className="flex flex-col gap-9">
-      <h1>글 목록</h1>
-      {posts.length === 0 && <div>Loading...</div>}
-      {posts.length > 0 && (
-        <ul>
-          {posts.map((post) => (
-            <li key={post.id}>
-              <Link href={`/posts/${post.id}`}>
-                {post.id} : {post.title}
-              </Link>
-            </li>
-          ))}
-        </ul>
+    <>
+      <h1>글 상세 보기</h1>
+
+      {post === null && <div>Loading...</div>}
+
+      {post !== null && (
+        <div>
+          <div>번호 : {post.id}</div>
+          <div>제목 : {post.title}</div>
+          <div>내용 : {post.content}</div>
+        </div>
       )}
-    </div>
+    </>
   );
 }
