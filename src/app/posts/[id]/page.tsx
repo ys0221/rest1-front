@@ -52,6 +52,12 @@ export default function Home() {
           삭제
         </button>
       </div>
+
+      <ul>
+        <li>
+            
+        </li>
+      </ul>
     </>
   );
 }
